@@ -5,11 +5,11 @@ maker test123
 Maker intern club porject
 
 ### Member List
-Reines 
-Issac
-Peter 
-Julie  
-Judy
-Tina
-Teng-Yu
-Ke Ting-jui
+* Reines 
+* Issac
+* Peter 
+* Julie  
+* Judy
+* Tina
+* Teng-Yu
+* Ke Ting-jui
