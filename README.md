@@ -3,7 +3,7 @@ maker test123
 
 ### Intro
 Maker intern club porject
-HELLO WORD!!! test!!
+HELLO WORD!!! test!!*3
 
 ### Setup 
 - Intel Edison driver
