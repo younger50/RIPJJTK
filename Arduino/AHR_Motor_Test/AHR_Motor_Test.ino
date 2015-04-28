@@ -219,13 +219,17 @@ void loop()
     positionControl();
   } 
   // 1Khz loop
-  digitalWrite(X_STEP_PIN    , HIGH);
-  digitalWrite(Y_STEP_PIN    , HIGH);
-  digitalWrite(Z_STEP_PIN    , HIGH);
-  delay(1);  
-  digitalWrite(X_STEP_PIN    , LOW);
-  digitalWrite(Y_STEP_PIN    , LOW);
-  digitalWrite(Z_STEP_PIN    , LOW);
+  if( millis() %2 <1 ){
+    // even number 1/1000 sec: pull pull step 
+    digitalWrite(X_STEP_PIN    , HIGH);
+    digitalWrite(Y_STEP_PIN    , HIGH);
+    digitalWrite(Z_STEP_PIN    , HIGH);
+  }else{
+    // odd number 1/1000 sec: step pull LOW 
+    digitalWrite(X_STEP_PIN    , LOW);
+    digitalWrite(Y_STEP_PIN    , LOW);
+    digitalWrite(Z_STEP_PIN    , LOW);
+  }
 }
 
 
