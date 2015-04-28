@@ -5,8 +5,8 @@ maker test123
 Maker intern club porject
 
 ### Setup 
-Intel Edison driver
-Arduino IDE for Edison
+- Intel Edison driver
+- Arduino IDE for Edison
 
 ### Member List
 * Reines 
