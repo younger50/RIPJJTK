@@ -92,3 +92,22 @@
 
 #define ZERO_SPEED 65535
 
+// PIN map
+#define X_STEP_PIN         A0
+#define X_DIR_PIN          A1
+#define X_ENABLE_PIN       2  //38
+
+#define Y_STEP_PIN         7  //A6
+#define Y_DIR_PIN          6  //A7
+#define Y_ENABLE_PIN       A2
+
+#define Z_STEP_PIN         3  //46
+#define Z_DIR_PIN          4  //48
+#define Z_ENABLE_PIN       5  //A8
+
+#define LED_PIN            13
+
+#define FAN_PIN            9
+
+#define HEATER_0_PIN       10
+#define HEATER_1_PIN       8
