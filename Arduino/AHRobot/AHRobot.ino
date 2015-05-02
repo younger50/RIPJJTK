@@ -172,7 +172,7 @@ void setup()
   //analogWrite(10,FAN2_SPEED);
 
   // enable timer interrupt simulate TCNT1 TCNT3
-  Timer1.initialize(1000); // set a timer of length 1000 microseconds (or 0.001 sec - or 1KHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.initialize(1); // set a timer of length 1 microseconds (or 1MHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
   Timer1.attachInterrupt( timerIsr ); // attach the service routine here
 }
 
@@ -290,6 +290,7 @@ void timerIsr(){
     }
     else{
         CLR(PORTF,0);
+        TCNT1 = 0;
     }
     // 1KHz Y stepper
     if (dir_y==0){
@@ -303,6 +304,7 @@ void timerIsr(){
     else{
         CLR(PORTF,6);
         CLR(PORTL,3);
+        TCNT3 = 0;
     }
 
 }
