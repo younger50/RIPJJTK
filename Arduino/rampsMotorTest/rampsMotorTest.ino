@@ -17,6 +17,8 @@
 #define HEATER_0_PIN       10
 #define HEATER_1_PIN       8
 
+#include <TimerOne.h>
+
 void setup() {
   pinMode(FAN_PIN , OUTPUT);
   pinMode(HEATER_0_PIN , OUTPUT);
@@ -42,6 +44,13 @@ void setup() {
   digitalWrite(X_DIR_PIN    , HIGH);
   digitalWrite(Y_DIR_PIN    , HIGH);
   digitalWrite(Z_DIR_PIN    , HIGH);
+  
+  digitalWrite(X_STEP_PIN    , LOW);
+  digitalWrite(Y_STEP_PIN    , LOW);
+  digitalWrite(Z_STEP_PIN    , LOW);
+
+  Timer1.initialize(1000); // set a timer of length 1000 microseconds (or 0.001 sec - or 1KHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.attachInterrupt( timerIsr ); // attach the service routine here
 }
 
 
@@ -81,6 +90,7 @@ void loop () {
     digitalWrite(Z_DIR_PIN    , LOW);
   }
   
+  /*
   digitalWrite(X_STEP_PIN    , HIGH);
   digitalWrite(Y_STEP_PIN    , HIGH);
   digitalWrite(Z_STEP_PIN    , HIGH);
@@ -88,7 +98,6 @@ void loop () {
   digitalWrite(X_STEP_PIN    , LOW);
   digitalWrite(Y_STEP_PIN    , LOW);
   digitalWrite(Z_STEP_PIN    , LOW);
-  /*
   // 1Khz loop
   if( millis() %2 <1 ){
     // even number 1/1000 sec: pull pull step 
@@ -103,3 +112,13 @@ void loop () {
   }
   */
 }
+
+void timerIsr()
+{
+    // Toggle LED & stepper test
+    // digitalWrite( 13, digitalRead( 13 ) ^ 1 );
+    digitalWrite( X_STEP_PIN, digitalRead(X_STEP_PIN) ^ 1 );
+    digitalWrite( Y_STEP_PIN, digitalRead(Y_STEP_PIN) ^ 1 );
+    digitalWrite( Z_STEP_PIN, digitalRead(Z_STEP_PIN) ^ 1 );
+}
+
