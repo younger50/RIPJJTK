@@ -81,13 +81,25 @@ void loop () {
     digitalWrite(Z_DIR_PIN    , LOW);
   }
   
-  
   digitalWrite(X_STEP_PIN    , HIGH);
   digitalWrite(Y_STEP_PIN    , HIGH);
   digitalWrite(Z_STEP_PIN    , HIGH);
-  delay(1);
-    
+  delay(1); 
   digitalWrite(X_STEP_PIN    , LOW);
   digitalWrite(Y_STEP_PIN    , LOW);
   digitalWrite(Z_STEP_PIN    , LOW);
+  /*
+  // 1Khz loop
+  if( millis() %2 <1 ){
+    // even number 1/1000 sec: pull pull step 
+    digitalWrite(X_STEP_PIN    , HIGH);
+    digitalWrite(Y_STEP_PIN    , HIGH);
+    digitalWrite(Z_STEP_PIN    , HIGH);
+  }else{
+    // odd number 1/1000 sec: step pull LOW 
+    digitalWrite(X_STEP_PIN    , LOW);
+    digitalWrite(Y_STEP_PIN    , LOW);
+    digitalWrite(Z_STEP_PIN    , LOW);
+  }
+  */
 }
