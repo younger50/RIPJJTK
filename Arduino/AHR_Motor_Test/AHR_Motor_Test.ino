@@ -17,6 +17,7 @@
 #include "Configuration.h"
 #include "Definitions.h"   // Variable definitions
 
+#include <TimerOne.h>
 
 void print_values()
 {
@@ -84,6 +85,7 @@ void setup()
   delay(2500);
 
   //LED blink
+  /*
   for (uint8_t k=0;k<4;k++)
   {
     digitalWrite( LED_PIN,HIGH);
@@ -91,6 +93,7 @@ void setup()
     digitalWrite( LED_PIN,LOW);
     delay(300);
   }
+  */
 /*
   // We use TIMER 1 for stepper motor X AXIS and Timer 3 for Y AXIS
   // STEPPER MOTORS INITIALIZATION
@@ -173,7 +176,12 @@ void setup()
   // Enable Air Hockey FANS
   //digitalWrite(9,HIGH);
   //digitalWrite(10,HIGH);
-
+  Timer1.initialize(1000); // set a timer of length 1000 microseconds (or 0.001 sec - or 1KHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.attachInterrupt( timerIsr ); // attach the service routine here
+  digitalWrite(LED_PIN , LOW);
+  digitalWrite(X_STEP_PIN    , LOW);
+  digitalWrite(Y_STEP_PIN    , LOW);
+  digitalWrite(Z_STEP_PIN    , LOW);
 }
 
 int stopped_counter=0;
@@ -219,6 +227,7 @@ void loop()
     positionControl();
   } 
   // 1Khz loop
+  /*
   if( millis() %2 <1 ){
     // even number 1/1000 sec: pull pull step 
     digitalWrite(X_STEP_PIN    , HIGH);
@@ -230,9 +239,15 @@ void loop()
     digitalWrite(Y_STEP_PIN    , LOW);
     digitalWrite(Z_STEP_PIN    , LOW);
   }
+  */
 }
 
-
-
-
+void timerIsr()
+{
+    // Toggle LED & stepper test
+    digitalWrite( 13, digitalRead( 13 ) ^ 1 );
+    digitalWrite( X_STEP_PIN, digitalRead(X_STEP_PIN) ^ 1 );
+    digitalWrite( Y_STEP_PIN, digitalRead(Y_STEP_PIN) ^ 1 );
+    digitalWrite( Z_STEP_PIN, digitalRead(Z_STEP_PIN) ^ 1 );
+}
 
