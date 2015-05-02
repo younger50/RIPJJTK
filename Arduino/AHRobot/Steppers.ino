@@ -19,12 +19,11 @@
 //     Z-ENABLE: A8  (PK0)
 // Y and Z motors controls the Y axis of the robot (same output)
 
-// We control the speed of the motors with interrupts (Timer1 and Timer3) tested up to 25Khz. 
+// We control the speed of the motors with interrupts (Timer1 and Timer3) tested up to 25Khz.
 // The position of the motor is controlled at 1Khz (in the main loop)
 
-
 // TIMER 1 : STEPPER MOTOR SPEED CONTROL X-AXIS
-ISR(TIMER1_COMPA_vect)
+/*ISR(TIMER1_COMPA_vect)
 {
   if (dir_x==0)
     return;
@@ -71,7 +70,7 @@ ISR(TIMER3_COMPA_vect)
     "nop");  // Wait 2 cycles. With the other instruction and this we ensure a more than 1 microsenconds step pulse
   CLR(PORTF,6);
   CLR(PORTL,3);
-}
+}*/
 
 // We use a ramp for acceleration and deceleration
 // To calculate the point we should start to decelerate we use this formula:
@@ -118,7 +117,7 @@ void positionControl()
   {
     if (pos_stop_x <= target_position_x)  // Start decelerating?
       setMotorXSpeed(0,dt);
-    else 
+    else
       setMotorXSpeed(-target_speed_x,dt);
   }
 
@@ -130,14 +129,14 @@ void positionControl()
   {
     if (pos_stop_y >= target_position_y)  // Start decelerating?
       setMotorYSpeed(0,dt);          // The deceleration ramp is done inside the setSpeed function
-    else 
+    else
       setMotorYSpeed(target_speed_y,dt);    // The aceleration ramp is done inside the setSpeed function
   }
   else   // Negative move
   {
     if (pos_stop_y <= target_position_y)  // Start decelerating?
       setMotorYSpeed(0,dt);
-    else 
+    else
       setMotorYSpeed(-target_speed_y,dt);
   }
   CLR(PORTF,3); // for external timing debug
@@ -145,7 +144,7 @@ void positionControl()
 
 // Speed could be positive or negative
 void setMotorXSpeed(int16_t tspeed, int16_t dt)
-{ 
+{
   long timer_period;
   int16_t accel;
 
@@ -166,16 +165,16 @@ void setMotorXSpeed(int16_t tspeed, int16_t dt)
     speed_x = tspeed;
 
   // Check if we need to change the direction pins
-  if ((speed_x==0)&&(dir_x!=0))    
-    dir_x = 0;	
+  if ((speed_x==0)&&(dir_x!=0))
+    dir_x = 0;
   else if ((speed_x>0)&&(dir_x!=1))
   {
 #ifdef INVERT_X_AXIS
     CLR(PORTF,1);   // X-DIR
 #else
-    SET(PORTF,1);   
+    SET(PORTF,1);
 #endif
-    dir_x = 1;	
+    dir_x = 1;
   }
   else if ((speed_x<0)&&(dir_x!=-1))
   {
@@ -184,7 +183,7 @@ void setMotorXSpeed(int16_t tspeed, int16_t dt)
 #else
     CLR(PORTF,1);
 #endif
-    dir_x = -1;	
+    dir_x = -1;
   }
 
   if (speed_x==0)
@@ -197,7 +196,7 @@ void setMotorXSpeed(int16_t tspeed, int16_t dt)
   if (timer_period > 65535)   // Check for minimun speed (maximun period without overflow)
     timer_period = ZERO_SPEED;
 
-  OCR1A = timer_period;  
+  OCR1A = timer_period;
   // Check  if we need to reset the timer...
   if (TCNT1 > OCR1A)
     TCNT1 = 0;
@@ -205,7 +204,7 @@ void setMotorXSpeed(int16_t tspeed, int16_t dt)
 
 // Speed could be positive or negative
 void setMotorYSpeed(int16_t tspeed,int16_t dt)
-{ 
+{
   long timer_period;
   int16_t accel;
 
@@ -226,14 +225,14 @@ void setMotorYSpeed(int16_t tspeed,int16_t dt)
     speed_y = tspeed;
 
   // Check if we need to change the direction pins
-  if ((speed_y==0)&&(dir_y!=0))    
-    dir_y = 0;	
+  if ((speed_y==0)&&(dir_y!=0))
+    dir_y = 0;
   else if ((speed_y>0)&&(dir_y!=1))
   {
 #ifdef INVERT_Y_AXIS // Y-DIR (Y-left)
     CLR(PORTF,7);
 #else
-    SET(PORTF,7);   
+    SET(PORTF,7);
 #endif
 
 #ifdef INVERT_Z_AXIS  // Z-DIR (Y-right)
@@ -242,7 +241,7 @@ void setMotorYSpeed(int16_t tspeed,int16_t dt)
     SET(PORTL,1);
 #endif
 
-    dir_y = 1;	
+    dir_y = 1;
   }
   else if ((speed_y<0)&&(dir_y!=-1))
   {
@@ -258,7 +257,7 @@ void setMotorYSpeed(int16_t tspeed,int16_t dt)
     CLR(PORTL,1);
 #endif
 
-    dir_y = -1;	
+    dir_y = -1;
   }
 
   if (speed_y==0)
@@ -271,7 +270,7 @@ void setMotorYSpeed(int16_t tspeed,int16_t dt)
   if (timer_period > 65535)   // Check for minimun speed (maximun period without overflow)
     timer_period = ZERO_SPEED;
 
-  OCR3A = timer_period;  
+  OCR3A = timer_period;
   // Check  if we need to reset the timer...
   if (TCNT3 > OCR3A)
     TCNT3 = 0;
@@ -286,27 +285,27 @@ void setSpeedS(int target_sx, int target_sy)
   target_speed_y = target_sy;
 }
 
-// set Robot position in mm. 
+// set Robot position in mm.
 // This function check for valid robot positions values
 // Convert from mm units to steps
 void setPosition(int target_x_mm_new, int target_y_mm_new)
-{ 
+{
   target_x_mm = constrain(target_x_mm_new,ROBOT_MIN_X,ROBOT_MAX_X);
   target_y_mm = constrain(target_y_mm_new,ROBOT_MIN_Y,ROBOT_MAX_Y);
   target_position_x = target_x_mm*X_AXIS_STEPS_PER_UNIT;
   target_position_y = target_y_mm*Y_AXIS_STEPS_PER_UNIT;
 }
 
-// set Robot position in mm. 
+// set Robot position in mm.
 // This function check for valid robot positions values
 // Convert from mm units to steps
 void setPosition_straight(int target_x_mm_new, int target_y_mm_new)
-{ 
+{
   int old_target_position_x;
   int old_target_position_y;
   int diff_x;
   int diff_y;
-  
+
   target_x_mm = constrain(target_x_mm_new,ROBOT_MIN_X,ROBOT_MAX_X);
   target_y_mm = constrain(target_y_mm_new,ROBOT_MIN_Y,ROBOT_MAX_Y);
   old_target_position_x = target_position_x;
@@ -330,17 +329,17 @@ void setPosition_straight(int target_x_mm_new, int target_y_mm_new)
     }
 }
 
-// set Robot position in 1/10 mm. 
+// set Robot position in 1/10 mm.
 // This function check for valid robot positions values
 // Convert from 1/10 mm units to steps
 // This function moves the robot in a straight line
 void setPosition_mm10_straight(int target_x_mm_new, int target_y_mm_new)
-{ 
+{
   int old_target_position_x;
   int old_target_position_y;
   int diff_x;
   int diff_y;
-  
+
   target_x_mm = constrain(target_x_mm_new,ROBOT_MIN_X*10,ROBOT_MAX_X*10);
   target_y_mm = constrain(target_y_mm_new,ROBOT_MIN_Y*10,ROBOT_MAX_Y*10);
   old_target_position_x = target_position_x;

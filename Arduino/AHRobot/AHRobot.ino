@@ -4,8 +4,8 @@
 // Date: 18/11/2013
 // Last updated: 24/03/2014
 // Version: 1.05
-// Project page : 
-//    Spanish: http://cienciaycacharreo.blogspot.com.es/2014/02/nuevo-proyecto-air-hockey-robot-3d.html 
+// Project page :
+//    Spanish: http://cienciaycacharreo.blogspot.com.es/2014/02/nuevo-proyecto-air-hockey-robot-3d.html
 //    English: http://cienciaycacharreo.blogspot.com.es/2014/02/new-project-air-hockey-robot-3d-printer.html
 // GIT repository: https://github.com/JJulio/AHRobot
 // License: Open Software GPL License
@@ -14,8 +14,10 @@
 #include "Configuration.h"
 #include "Definitions.h"   // Variable definitions
 
-void setup() 
-{ 
+#include <TimerOne.h>
+
+void setup()
+{
   // STEPPER MOTOR PINS (SAME AS RAMPS 1.4)
   // X MOTOR
   //     X-STEP: A0 //   (PF0)
@@ -30,7 +32,7 @@ void setup()
   //     Z-DIR:  4 //D48   (PL1)
   //     Z-ENABLE: 5 //A8  (PK0)
 
-  // STEPPER PINS 
+  // STEPPER PINS
   // X_AXIS
   pinMode( X_ENABLE_PIN, OUTPUT);  // ENABLE MOTOR
   pinMode( X_STEP_PIN, OUTPUT);  // STEP MOTOR
@@ -66,7 +68,7 @@ void setup()
   delay(2000);
 
   cameraProcessInit();  // Camera variable initializations
-  
+
   // Robot positions initialization
   defense_position = ROBOT_DEFENSE_POSITION;   // Robot y axis defense position
   attack_position = ROBOT_DEFENSE_ATTACK_POSITION;   // Robot y axis position for defense+attack
@@ -78,48 +80,48 @@ void setup()
     delay(300);
     digitalWrite(13,LOW);
     delay(300);
-  } 
+  }
 
   // We use TIMER 1 for stepper motor X AXIS and Timer 3 for Y AXIS
   // STEPPER MOTORS INITIALIZATION
   // TIMER1 CTC MODE
   TCCR1B &= ~(1<<WGM13);
   TCCR1B |=  (1<<WGM12);
-  TCCR1A &= ~(1<<WGM11); 
+  TCCR1A &= ~(1<<WGM11);
   TCCR1A &= ~(1<<WGM10);
 
   // output mode = 00 (disconnected)
-  TCCR1A &= ~(3<<COM1A0); 
-  TCCR1A &= ~(3<<COM1B0); 
+  TCCR1A &= ~(3<<COM1A0);
+  TCCR1A &= ~(3<<COM1B0);
 
   // Set the timer pre-scaler
   // Generally we use a divider of 8, resulting in a 2MHz timer on 16MHz CPU
   TCCR1B = (TCCR1B & ~(0x07<<CS10)) | (2<<CS10);
 
-  OCR1A = ZERO_SPEED;   // Motor stopped
-*/  dir_x = 0; /*
+  OCR1A = ZERO_SPEED;   // Motor stopped */
+  dir_x = 0;
   TCNT1 = 0;
-
-  // We use TIMER 3 for stepper motor Y AXIS 
+/*
+  // We use TIMER 3 for stepper motor Y AXIS
   // STEPPER MOTORS INITIALIZATION
   // TIMER3 CTC MODE
   TCCR3B &= ~(1<<WGM13);
   TCCR3B |=  (1<<WGM12);
-  TCCR3A &= ~(1<<WGM11); 
+  TCCR3A &= ~(1<<WGM11);
   TCCR3A &= ~(1<<WGM10);
 
   // output mode = 00 (disconnected)
-  TCCR3A &= ~(3<<COM1A0); 
-  TCCR3A &= ~(3<<COM1B0); 
+  TCCR3A &= ~(3<<COM1A0);
+  TCCR3A &= ~(3<<COM1B0);
 
   // Set the timer pre-scaler
   // Generally we use a divider of 8, resulting in a 2MHz timer on 16MHz CPU
   TCCR3B = (TCCR3B & ~(0x07<<CS10)) | (2<<CS10);
 
-  OCR3A = ZERO_SPEED;   // Motor stopped
-*/  dir_y = 0; /*
+  OCR3A = ZERO_SPEED;   // Motor stopped  */
+  dir_y = 0;
   TCNT3 = 0;
-*/
+
   //Initializing init position
   position_x = ROBOT_INITIAL_POSITION_X*X_AXIS_STEPS_PER_UNIT;
   position_y = ROBOT_INITIAL_POSITION_Y*Y_AXIS_STEPS_PER_UNIT;
@@ -168,11 +170,15 @@ void setup()
   //digitalWrite(10,HIGH);
   //analogWrite(9,FAN1_SPEED);
   //analogWrite(10,FAN2_SPEED);
+
+  // enable timer interrupt simulate TCNT1 TCNT3
+  Timer1.initialize(1000); // set a timer of length 1000 microseconds (or 0.001 sec - or 1KHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.attachInterrupt( timerIsr ); // attach the service routine here
 }
 
 // Main loop
-void loop() 
-{ 
+void loop()
+{
   int dt;
   uint8_t logOutput=0;
 
@@ -204,15 +210,15 @@ void loop()
 
       // Robot strategy based on puck prediction
       newDataStrategy();
-      
-     
+
+
     }  // End packet received
-    
-    
-    
+
+
+
     // Strategy : Robot behaviour
     robotStrategy();
-    
+
     // Console output
     if (logOutput)
       {
@@ -233,7 +239,7 @@ void loop()
         Serial.print(",");
         Serial.println(puckCoordY);
       }
-      
+
     // DEBUG: We inform of the position error of the robot as seen in the camera (util for calibrations)
     if (loop_counter == 4002)
       {
@@ -243,12 +249,60 @@ void loop()
         Serial.println(robotMissingStepsErrorY);
       }
 
-    
+
     positionControl();
   } // 1Khz loop
 }
 
+// motor pin pull high
+// WRD:
+// 1 = PORTF
+// 2 = PORTL
+void SET(int portWRD, int portNUM){
+    if( portWRD==1 && portNUM==0 ){ digitalWrite( X_STEP_PIN, HIGH); }
+    if( portWRD==1 && portNUM==6 ){ digitalWrite( Y_STEP_PIN, HIGH); }
+    if( portWRD==2 && portNUM==3 ){ digitalWrite( Z_STEP_PIN, HIGH); }
+    if( portWRD==1 && portNUM==1 ){ digitalWrite( X_DIR_PIN, HIGH); }
+    if( portWRD==1 && portNUM==7 ){ digitalWrite( Y_DIR_PIN, HIGH); }
+    if( portWRD==2 && portNUM==1 ){ digitalWrite( Z_DIR_PIN, HIGH); }
+}
 
+// motor pin pull low
+void CLR(int portWRD, int portNUM){
+    if( portWRD==1 && portNUM==0 ){ digitalWrite( X_STEP_PIN, LOW); }
+    if( portWRD==1 && portNUM==6 ){ digitalWrite( Y_STEP_PIN, LOW); }
+    if( portWRD==2 && portNUM==3 ){ digitalWrite( Z_STEP_PIN, LOW); }
+    if( portWRD==1 && portNUM==1 ){ digitalWrite( X_DIR_PIN, LOW); }
+    if( portWRD==1 && portNUM==7 ){ digitalWrite( Y_DIR_PIN, LOW); }
+    if( portWRD==2 && portNUM==1 ){ digitalWrite( Z_DIR_PIN, LOW); }
+}
 
+//update timer by interrupt
+void timerIsr(){
+    TCNT1 = TCNT1+1;
+    TCNT3 = TCNT3+1;
+    if (dir_x==0){
+        // dir off, don't move
+    }
+    // 1KHz X stepper
+    else if(TCNT1%2000<1000){
+        SET(PORTF,0);
+    }
+    else{
+        CLR(PORTF,0);
+    }
+    // 1KHz Y stepper
+    if (dir_y==0){
+        // dir off, don't move
+    }
+    // 1KHz Y stepper
+    else if(TCNT3%2000<1000){
+        SET(PORTF,6);
+        SET(PORTL,3);
+    }
+    else{
+        CLR(PORTF,6);
+        CLR(PORTL,3);
+    }
 
-
+}

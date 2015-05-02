@@ -18,7 +18,7 @@ int16_t speed_m[2];           // Actual speed of motors
 uint8_t dir_m[2];             // Actual direction of steppers motors
 
 uint16_t counter_m[2];        // counters for periods
-uint16_t period_m[2][8];      // Eight subperiods 
+uint16_t period_m[2][8];      // Eight subperiods
 uint8_t period_m_index[2];    // index for subperiods
 
 // kinematic variables
@@ -29,7 +29,7 @@ volatile int16_t position_y;
 int16_t speed_x;
 int16_t speed_y;
 int8_t dir_x;     //(dir=1 positive, dir=-1 negative)
-int8_t dir_y;  
+int8_t dir_y;
 int16_t target_position_x;
 int16_t target_position_y;
 int16_t target_speed_x;
@@ -96,7 +96,7 @@ int cam_center_x;
 int cam_center_y;
 uint16_t cam_timestamp;
 float cam_pix_to_mm;
-float cam_rotation;  //Camera rotation in radians 
+float cam_rotation;  //Camera rotation in radians
 
 
 // Serial port  variables
@@ -115,12 +115,21 @@ int16_t user_speed_y;
 int16_t filt_user_speed_x;
 int16_t filt_user_speed_y;
 
+// register
+int PORTF=1;
+int PORTL=2;
+int OCR1A;
+int OCR3A;
+// X axis motor enable timer
+int TCNT1;
+// Y axis motor enable timer
+int TCNT3;
 
 // Some util functions...
 int freeRam () {
-  extern int __heap_start, *__brkval; 
-  int v; 
-  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+  extern int __heap_start, *__brkval;
+  int v;
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
 // Arduino abs function sometimes fail!
@@ -140,4 +149,5 @@ int sign(int val)
   else
     return(1);
 }
+
 
