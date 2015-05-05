@@ -12,7 +12,7 @@ uint16_t extractParamInt(uint8_t pos){
 
   u.Buff[0] = (unsigned char)SBuffer[pos];
   u.Buff[1] = (unsigned char)SBuffer[pos+1];
-  return(u.d); 
+  return(u.d);
 }
 
 // Read Vision System Packets over Serial Port
@@ -54,17 +54,24 @@ void packetRead()
         puckPixY = extractParamInt(6);
         puckSize = extractParamInt(4);
         robotPixX = extractParamInt(2);
-        robotPixY = extractParamInt(0);  
+        robotPixY = extractParamInt(0);
         readStatus = 0;
         newPacket = 1;
-        //Serial.println("P");
+        Serial.println("P");
+        Serial.println(cam_timestamp);
+        Serial.println(puckPixX);
+        Serial.println(puckPixY);
+        Serial.println(puckSize);
+        Serial.println(robotPixX);
+        Serial.println(robotPixY);
+        Serial.println("P");
       }
     }
   }
 }
 
 
-// This process takes the puck position from camera and calculate puck position in robot reference system 
+// This process takes the puck position from camera and calculate puck position in robot reference system
 // and trajectory prediction. time in ms
 void cameraProcess(int posX, int posY, int time)
 {
@@ -78,7 +85,7 @@ void cameraProcess(int posX, int posY, int time)
   int bounce_y;
 
   // Convert from Camera reference system to Robot reference system
-  // We suppose very small camera angle rotatios (less than 5 degrees) so we use the 
+  // We suppose very small camera angle rotatios (less than 5 degrees) so we use the
   // aproximation that sin(cam_rotation) = cam_rotation (in radians)
   // Camera X axis correspond to robot Y axis
   coordY = (posX - cam_center_x);   // First we convert image coordinates to center of image
@@ -90,12 +97,12 @@ void cameraProcess(int posX, int posY, int time)
   // Speed calculation on each axis
   vectorX = (coordX-puckCoordX);
   vectorY = (coordY-puckCoordY);
-  
+
   puckOldCoordX = puckCoordX;
   puckOldCoordY = puckCoordY;
   puckCoordX = coordX;
   puckCoordY = coordY;
-  
+
   // Noise detection, if there are a big vector this should be noise
   if ((vectorY<-160)||(vectorY>160)||(vectorX>160)||(vectorX<-160))
   {
@@ -124,11 +131,11 @@ void cameraProcess(int posX, int posY, int time)
         puckSpeedYAverage = (puckSpeedY + puckOldSpeedY)>>1;
       else
         puckSpeedYAverage = puckSpeedY;
-      } 
+      }
 
   //puckSpeed = sqrt(vectorX*vectorX + vectorY*vectorY)*1000.0/time;
   //puckDirection = atan2(vectorY,vectorX);
-  
+
   predict_x_attack = -1;
 
   // It´s time to predict...
@@ -181,7 +188,7 @@ void cameraProcess(int posX, int posY, int time)
 
       if ((predict_x<38)||(predict_x>562))
       {
-        // New bounce?? 
+        // New bounce??
         // We do nothing then... with two bounces there are small risk of goal...
         predict_x_old = -1;
         predict_status = 0;
@@ -225,7 +232,7 @@ void cameraProcess(int posX, int posY, int time)
     }
   }
   else // Puck is moving slowly or to the other side
-  {	
+  {
     predict_x_old = -1;
     predict_status = 0;
     predict_bounce = 0;
@@ -264,7 +271,7 @@ void robotDetection(int posX, int posY)
   int coordY;
 
   // Convert from Camera reference system to Robot reference system
-  // We suppose very small angle rotatios (less than 5 degrees) so we use the 
+  // We suppose very small angle rotatios (less than 5 degrees) so we use the
   // aproximation that sin cam_rotation = cam_rotation (in radians)
   // Camera X axis correspond to robot Y axis
   coordY = (posX - cam_center_x);   // First we convert image coordinates to center of image
@@ -311,7 +318,7 @@ void missingStepsDetection()
         // X axis
         robotCoordXAverage = robotCoordXAverage/robotCoordSamples;
         robotMissingStepsErrorX = myAbs(robot_position_x_mm - robotCoordXAverage);  // in milimeters)
-        if (robotMissingStepsErrorX > MISSING_STEPS_MAX_ERROR_X) 
+        if (robotMissingStepsErrorX > MISSING_STEPS_MAX_ERROR_X)
         {
           // Missing steps detected on X axis!! We need to correct this...
           #ifdef CORRECT_MISSING_STEPS_X
@@ -324,16 +331,16 @@ void missingStepsDetection()
         robotCoordYAverage = robotCoordYAverage/robotCoordSamples;
         robot_position_y_mm += ROBOT_POSITION_CAMERA_CORRECTION_Y;   // correction because camera point of view and robot mark
         robotMissingStepsErrorY = myAbs(robot_position_y_mm - robotCoordYAverage);
-        if (robotMissingStepsErrorY > MISSING_STEPS_MAX_ERROR_Y) 
+        if (robotMissingStepsErrorY > MISSING_STEPS_MAX_ERROR_Y)
         {
           // Missing steps detected on Y axis!! We need to correct this...
           #ifdef CORRECT_MISSING_STEPS_Y
           position_y = robotCoordYAverage*Y_AXIS_STEPS_PER_UNIT;
           Serial.print("MSY ");
           Serial.println(robotMissingStepsErrorY);
-          #endif 
+          #endif
         }
-      }    
+      }
     }
     else
     {
