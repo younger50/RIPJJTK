@@ -61,7 +61,7 @@ void setup()
   digitalWrite( Y_ENABLE_PIN, HIGH);
   digitalWrite( Z_ENABLE_PIN, HIGH);
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("AHR Robot version 1.05");
   delay(500);
   Serial.println("Initializing robot...");
@@ -97,8 +97,8 @@ void setup()
   // Set the timer pre-scaler
   // Generally we use a divider of 8, resulting in a 2MHz timer on 16MHz CPU
   TCCR1B = (TCCR1B & ~(0x07<<CS10)) | (2<<CS10);
-
-  OCR1A = ZERO_SPEED;   // Motor stopped */
+*/
+  OCR1A = ZERO_SPEED;   // Motor stopped
   dir_x = 0;
   TCNT1 = 0;
 /*
@@ -117,8 +117,8 @@ void setup()
   // Set the timer pre-scaler
   // Generally we use a divider of 8, resulting in a 2MHz timer on 16MHz CPU
   TCCR3B = (TCCR3B & ~(0x07<<CS10)) | (2<<CS10);
-
-  OCR3A = ZERO_SPEED;   // Motor stopped  */
+*/
+  OCR3A = ZERO_SPEED;   // Motor stopped
   dir_y = 0;
   TCNT3 = 0;
 
@@ -281,6 +281,7 @@ void CLR(int portWRD, int portNUM){
 void timerIsr(){
     TCNT1 = TCNT1+1;
     TCNT3 = TCNT3+1;
+    /*
     if (dir_x==0){
         // dir off, don't move
     }
@@ -306,5 +307,5 @@ void timerIsr(){
         CLR(PORTL,3);
         TCNT3 = 0;
     }
-
+    */
 }

@@ -26,6 +26,8 @@ void packetRead()
       SBuffer[i] = SBuffer[i-1];
     }
     SBuffer[0] = Serial.read();
+    //Serial.print("SB0 ");
+    //Serial.println(SBuffer[0]);
     //Serial.print(S1Buffer[0]);
     // We look for a  message start like "mm" to sync packets
     if ((SBuffer[0] == 'm')&&(SBuffer[1] == 'm'))
@@ -68,6 +70,7 @@ void packetRead()
       }
     }
   }
+  //Serial.println("packetRead end");
 }
 
 

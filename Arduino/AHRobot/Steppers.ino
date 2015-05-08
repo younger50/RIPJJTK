@@ -140,6 +140,7 @@ void positionControl()
       setMotorYSpeed(-target_speed_y,dt);
   }
   CLR(PORTF,3); // for external timing debug
+  //Serial.println("position control end");
 }
 
 // Speed could be positive or negative
