@@ -7,7 +7,7 @@
 
 // This code detects the puck and the robot in the hockey game at 60Hz
 // Detects two objects PUCK and ROBOT with two different colors
-// And sends serial packets to arduino at 115200 bauds(bit per sec)
+// And sends serial packets to arduino at 115200 bauds
 // Serial packet:
 //     Sync start: 2 bytes: mm
 //     TimeStamp: 2 bytes
@@ -51,7 +51,7 @@
 time_t start,end;
 
 // Parameters (with default values)
-char comPort[20] = "COM19";
+char comPort[20] = "COM15";
 int minH=70;
 int maxH=94;
 int minS=60;
@@ -490,8 +490,8 @@ int main(int argc, char* argv[]){
 		printf("Example with default paremeters: AHR.exe COM18\n");
 		// H : 70-94 S: 60-150 V: 10-145   GREEN EVA FOAM (PUCK)
 		// H : 5-20  S: 110-200 V: 90-200  ORANGE EVA FOAM (ROBOT)
-		printf("Example full parameters: AHR.exe COM19 70 94 60 150 10 145 5 20 110 200 90 200 60\n");
-		return -1;
+		printf("Example full parameters: AHR.exe COM15 70 94 60 150 10 145 5 20 110 200 90 200 60\n");
+		//return -1;
 	}
 	
 	// COM port 
@@ -550,8 +550,8 @@ int main(int argc, char* argv[]){
        printf("Capture failure\n");
        return -1;
     }
-    cvSetCaptureProperty(capture,CV_CAP_PROP_FRAME_WIDTH,320);
-	cvSetCaptureProperty(capture,CV_CAP_PROP_FRAME_HEIGHT,240);
+    cvSetCaptureProperty(capture,CV_CAP_PROP_FRAME_WIDTH,640);
+	cvSetCaptureProperty(capture,CV_CAP_PROP_FRAME_HEIGHT,480);
 	cvSetCaptureProperty(capture,CV_CAP_PROP_FPS,fps);
     frameGrabbed = cvQueryFrame(capture);           
     if(!frameGrabbed) return -1;
@@ -571,7 +571,7 @@ int main(int argc, char* argv[]){
 	cvNamedWindow("Video");     
     //cvNamedWindow("Processed");
 	cvWaitKey(1200);
-	openComPort(auxstr);  // L"\\\\.\\COM19");
+	openComPort(auxstr);  // L"\\\\.\\COM15");
 	cvWaitKey(1000);
 	
 	//iterate through each frames of the video    
@@ -652,7 +652,7 @@ int main(int argc, char* argv[]){
 		//If 'ESC' is pressed, break the loop
 		if((char)c==27 ) break;
 
-		counter++;
+		//counter++;
     }
 
     cvDestroyAllWindows() ;
