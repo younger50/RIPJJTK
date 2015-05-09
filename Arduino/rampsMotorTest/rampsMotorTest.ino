@@ -116,9 +116,15 @@ void loop () {
 void timerIsr()
 {
     // Toggle LED & stepper test
-    // digitalWrite( 13, digitalRead( 13 ) ^ 1 );
+    //digitalWrite( 13, digitalRead( 13 ) ^ 1 );
     digitalWrite( X_STEP_PIN, digitalRead(X_STEP_PIN) ^ 1 );
     digitalWrite( Y_STEP_PIN, digitalRead(Y_STEP_PIN) ^ 1 );
     digitalWrite( Z_STEP_PIN, digitalRead(Z_STEP_PIN) ^ 1 );
+    //digitalWrite(X_STEP_PIN    , HIGH);
+    //digitalWrite(Y_STEP_PIN    , HIGH);
+    //digitalWrite(Z_STEP_PIN    , HIGH);
+    //digitalWrite(X_STEP_PIN    , LOW);
+    //digitalWrite(Y_STEP_PIN    , LOW);
+    //digitalWrite(Z_STEP_PIN    , LOW);
 }
 
