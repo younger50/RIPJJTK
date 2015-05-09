@@ -26,7 +26,7 @@ void packetRead()
       SBuffer[i] = SBuffer[i-1];
     }
     SBuffer[0] = Serial.read();
-    //Serial.print("SB0 ");
+    //Serial.print("SB ");
     //Serial.println(SBuffer[0]);
     //Serial.print(S1Buffer[0]);
     // We look for a  message start like "mm" to sync packets
@@ -34,12 +34,13 @@ void packetRead()
     {
       if (readStatus == 0)
       {
+        //Serial.println("mm logic 1");
         readStatus=1;
         readCounter=12;
       }
       else
       {
-        Serial.println("S ERR");
+        //Serial.println("mm logic 2 SERR");
         readStatus=1;
         readCounter=12;
       }
@@ -59,14 +60,14 @@ void packetRead()
         robotPixY = extractParamInt(0);
         readStatus = 0;
         newPacket = 1;
-        Serial.println("P");
+        Serial.println("===Positino Get===");
         Serial.println(cam_timestamp);
         Serial.println(puckPixX);
         Serial.println(puckPixY);
         Serial.println(puckSize);
         Serial.println(robotPixX);
         Serial.println(robotPixY);
-        Serial.println("P");
+        Serial.println("===Postion End===");
       }
     }
   }
