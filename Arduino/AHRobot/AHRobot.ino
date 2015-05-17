@@ -172,7 +172,7 @@ void setup()
   //analogWrite(10,FAN2_SPEED);
 
   // enable timer interrupt simulate TCNT1 TCNT3
-  Timer1.initialize(1); // set a timer of length 1 microseconds (or 1MHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.initialize(1000); // match mega
   Timer1.attachInterrupt( timerIsr ); // attach the service routine here
 }
 
@@ -281,31 +281,34 @@ void CLR(int portWRD, int portNUM){
 void timerIsr(){
     TCNT1 = TCNT1+1;
     TCNT3 = TCNT3+1;
-    /*
+
+    bound1 = OCR1A/65535*10000;
+    bound1 = 1;
+    //dir_x = 1;
     if (dir_x==0){
         // dir off, don't move
     }
     // 1KHz X stepper
-    else if(TCNT1%2000<1000){
+    else if(TCNT1>bound1){
+        position_x += dir_x;
         SET(PORTF,0);
-    }
-    else{
         CLR(PORTF,0);
-        TCNT1 = 0;
+        //TCNT1 = 0;
     }
-    // 1KHz Y stepper
+
+    bound3 = OCR3A/65535*10000;
+    bound3 = 1;
+    //dir_y = 1;
     if (dir_y==0){
         // dir off, don't move
     }
-    // 1KHz Y stepper
-    else if(TCNT3%2000<1000){
+    // Y stepper
+    else if(TCNT3>bound3){
+        position_y += dir_y;
         SET(PORTF,6);
         SET(PORTL,3);
-    }
-    else{
         CLR(PORTF,6);
         CLR(PORTL,3);
-        TCNT3 = 0;
+        //TCNT3 = 0;
     }
-    */
 }

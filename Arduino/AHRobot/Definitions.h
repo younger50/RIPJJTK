@@ -118,12 +118,14 @@ int16_t filt_user_speed_y;
 // register
 int PORTF=1;
 int PORTL=2;
-int OCR1A;
-int OCR3A;
+float OCR1A;
+float bound1;
+float OCR3A;
+float bound3;
 // X axis motor enable timer
-int TCNT1;
+float TCNT1;
 // Y axis motor enable timer
-int TCNT3;
+float TCNT3;
 
 // Some util functions...
 int freeRam () {

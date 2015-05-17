@@ -216,10 +216,10 @@ void setMotorXSpeed(int16_t tspeed, int16_t dt)
   if (timer_period > 65535)   // Check for minimun speed (maximun period without overflow)
     timer_period = ZERO_SPEED;
 
-  //OCR1A = timer_period;
-  // Check  if we need to reset the timer...
-  //if (TCNT1 > OCR1A)
-  //  TCNT1 = 0;
+  OCR1A = timer_period;
+   Check  if we need to reset the timer...
+  if (TCNT1 > OCR1A)
+    TCNT1 = 0;
 }
 
 // Speed could be positive or negative
@@ -290,10 +290,10 @@ void setMotorYSpeed(int16_t tspeed,int16_t dt)
   if (timer_period > 65535)   // Check for minimun speed (maximun period without overflow)
     timer_period = ZERO_SPEED;
 
-  //OCR3A = timer_period;
-  // Check  if we need to reset the timer...
-  //if (TCNT3 > OCR3A)
-  //  TCNT3 = 0;
+  OCR3A = timer_period;
+   Check  if we need to reset the timer...
+  if (TCNT3 > OCR3A)
+    TCNT3 = 0;
 }
 
 // Set speed on each axis in steps/sec
