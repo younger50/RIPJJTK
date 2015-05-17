@@ -49,7 +49,7 @@ void setup() {
   digitalWrite(Y_STEP_PIN    , LOW);
   digitalWrite(Z_STEP_PIN    , LOW);
 
-  Timer1.initialize(1000); // set a timer of length 1000 microseconds (or 0.001 sec - or 1KHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.initialize(500); // set a timer of length 1000 microseconds (or 0.001 sec - or 1KHz => the led will blink 5 times, 5 cycles of on-and-off, per second)
   Timer1.attachInterrupt( timerIsr ); // attach the service routine here
 }
 
@@ -79,7 +79,7 @@ void loop () {
   }
   
   
-  if (millis() %10000 <5000) {
+  if (millis() %2000 <1000) {
     digitalWrite(X_DIR_PIN    , HIGH);
     digitalWrite(Y_DIR_PIN    , HIGH);
     digitalWrite(Z_DIR_PIN    , HIGH);
