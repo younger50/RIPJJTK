@@ -82,12 +82,12 @@ void loop () {
   if (millis() %2000 <1000) {
     digitalWrite(X_DIR_PIN    , HIGH);
     digitalWrite(Y_DIR_PIN    , HIGH);
-    digitalWrite(Z_DIR_PIN    , HIGH);
+    digitalWrite(Z_DIR_PIN    , LOW);
   }
   else {
     digitalWrite(X_DIR_PIN    , LOW);
     digitalWrite(Y_DIR_PIN    , LOW);
-    digitalWrite(Z_DIR_PIN    , LOW);
+    digitalWrite(Z_DIR_PIN    , HIGH);
   }
   
   /*
