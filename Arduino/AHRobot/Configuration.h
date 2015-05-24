@@ -74,8 +74,8 @@
 #define CORRECT_MISSING_STEPS_X 1
 #define CORRECT_MISSING_STEPS_Y 1
 
-#define MISSING_STEPS_MAX_ERROR_X 8
-#define MISSING_STEPS_MAX_ERROR_Y 10
+#define MISSING_STEPS_MAX_ERROR_X 100
+#define MISSING_STEPS_MAX_ERROR_Y 100
 #define ROBOT_POSITION_CAMERA_CORRECTION_Y -20 // Correction of the position of the camera because the camera point of view and mark position
 
 // AIR HOCKEY TABLE FANS SPEED

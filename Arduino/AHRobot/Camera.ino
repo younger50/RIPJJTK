@@ -98,10 +98,10 @@ void cameraProcess(int posX, int posY, int time)
   coordY = ROBOT_CENTER_Y - coordY*cam_pix_to_mm;
   coordX = ROBOT_CENTER_X - coordX*cam_pix_to_mm*(1-cam_rotation);
 
-        Serial.println("===Convertted cord start===");
-        Serial.println(coordX);
-        Serial.println(coordY);
-        Serial.println("===Convertted cord end===");
+        //Serial.println("===Convertted cord start===");
+        //Serial.println(coordX);
+        //Serial.println(coordY);
+        //Serial.println("===Convertted cord end===");
         //delay(500);
 
   // Speed calculation on each axis
@@ -114,7 +114,7 @@ void cameraProcess(int posX, int posY, int time)
   puckCoordY = coordY;
 
   // Noise detection, if there are a big vector this should be noise
-  if ((vectorY<-160)||(vectorY>160)||(vectorX>160)||(vectorX<-160))
+  if ((vectorY<-160)||(vectorY>160)||(vectorX>160)||(vectorX<-160)||(coordX<20)||(coordX>650))
   {
     Serial.println("NOISE");
     predict_status = -1;
