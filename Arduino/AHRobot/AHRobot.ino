@@ -281,8 +281,8 @@ void CLR(int portWRD, int portNUM){
 void timerIsr(){
     TCNT1 = TCNT1+1;
     TCNT3 = TCNT3+1;
-    //bound1 = OCR1A/65535*1000;
-    bound1 = 1;
+    bound1 = OCR1A/65535*1000;
+    //bound1 = 1;
     //dir_x = 1;
     if (dir_x==0){
         // dir off, don't move
@@ -295,8 +295,8 @@ void timerIsr(){
         //TCNT1 = 0;
     }
 
-    //bound3 = OCR3A/65535*1000;
-    bound3 = 1;
+    bound3 = OCR3A/65535*1000;
+    //bound3 = 1;
     //dir_y = 1;
     if (dir_y==0){
         // dir off, don't move

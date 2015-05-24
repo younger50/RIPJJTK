@@ -61,12 +61,12 @@ void packetRead()
         readStatus = 0;
         newPacket = 1;
         Serial.println("===Positino Get===");
-        Serial.println(cam_timestamp);
+        //Serial.println(cam_timestamp);
         Serial.println(puckPixX);
         Serial.println(puckPixY);
-        Serial.println(puckSize);
-        Serial.println(robotPixX);
-        Serial.println(robotPixY);
+        //Serial.println(puckSize);
+        //Serial.println(robotPixX);
+        //Serial.println(robotPixY);
         Serial.println("===Postion End===");
       }
     }
@@ -97,6 +97,12 @@ void cameraProcess(int posX, int posY, int time)
 
   coordY = ROBOT_CENTER_Y - coordY*cam_pix_to_mm;
   coordX = ROBOT_CENTER_X - coordX*cam_pix_to_mm*(1-cam_rotation);
+
+        Serial.println("===Convertted cord start===");
+        Serial.println(coordX);
+        Serial.println(coordY);
+        Serial.println("===Convertted cord end===");
+        //delay(500);
 
   // Speed calculation on each axis
   vectorX = (coordX-puckCoordX);
