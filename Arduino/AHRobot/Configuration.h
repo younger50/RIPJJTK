@@ -28,12 +28,12 @@
 // UNCOMMENT THIS LINES TO INVERT MOTORS
 #define INVERT_X_AXIS 1
 //#define INVERT_Y_AXIS 1  //Y-LEFT
-//#define INVERT_Z_AXIS 1  //Y_RIGHT
+#define INVERT_Z_AXIS 1  //Y_RIGHT
 
 // Geometric calibration.
 // This depends on the pulley teeth. For 42 teeth GT2 => 19, for 40 teeth GT2 => 20, for 16 teeth T5 => 20
-#define X_AXIS_STEPS_PER_UNIT 19    // With 42 teeth GT2 pulley and 1/8 microstepping on drivers
-#define Y_AXIS_STEPS_PER_UNIT 19    // 200*8 = 1600 steps/rev = 1600/42teeth*2mm = 19.047, using 19 is an error of 1mm every 40cm not too much! and we use int operations...
+#define X_AXIS_STEPS_PER_UNIT 4    // With 42 teeth GT2 pulley and 1/8 microstepping on drivers
+#define Y_AXIS_STEPS_PER_UNIT 4    // 200*8 = 1600 steps/rev = 1600/42teeth*2mm = 19.047, using 19 is an error of 1mm every 40cm not too much! and we use int operations...
 
 // Absolute Min and Max robot positions in mm (measured from center of robot pusher)
 #define ROBOT_MIN_X 100
@@ -55,7 +55,7 @@
 #define ROBOT_DEFENSE_POSITION 95
 #define ROBOT_DEFENSE_ATTACK_POSITION 220
 
-#define POSITION_TOLERANCE 5 // 5 steps
+#define POSITION_TOLERANCE 50 // 5 steps
 
 // PS3 Camera pixels
 // NOTE: We are using the camera at 320x240 but we are outputing a 640x480 pixel equivalent position
