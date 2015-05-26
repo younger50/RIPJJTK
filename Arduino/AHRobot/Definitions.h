@@ -23,8 +23,8 @@ uint8_t period_m_index[2];    // index for subperiods
 
 // kinematic variables
 // position, speed and acceleration are in step units
-volatile int16_t position_x;  // This variables are modified inside the Timer interrupts
-volatile int16_t position_y;
+float position_x; //volatile int16_t // This variables are modified inside the Timer interrupts
+float position_y; //volatile int16_t
 
 int16_t speed_x;
 int16_t speed_y;

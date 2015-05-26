@@ -32,14 +32,14 @@
 
 // Geometric calibration.
 // This depends on the pulley teeth. For 42 teeth GT2 => 19, for 40 teeth GT2 => 20, for 16 teeth T5 => 20
-#define X_AXIS_STEPS_PER_UNIT 4    // With 42 teeth GT2 pulley and 1/8 microstepping on drivers
-#define Y_AXIS_STEPS_PER_UNIT 4    // 200*8 = 1600 steps/rev = 1600/42teeth*2mm = 19.047, using 19 is an error of 1mm every 40cm not too much! and we use int operations...
+#define X_AXIS_STEPS_PER_UNIT 5    // With 42 teeth GT2 pulley and 1/8 microstepping on drivers
+#define Y_AXIS_STEPS_PER_UNIT 4.5    // 200*8 = 1600 steps/rev = 1600/42teeth*2mm = 19.047, using 19 is an error of 1mm every 40cm not too much! and we use int operations...
 
 // Absolute Min and Max robot positions in mm (measured from center of robot pusher)
 #define ROBOT_MIN_X 100
 #define ROBOT_MIN_Y 80
 #define ROBOT_MAX_X 500
-#define ROBOT_MAX_Y 400
+#define ROBOT_MAX_Y 600
 
 // This is the center of the table. All units in milimeters
 #define ROBOT_CENTER_X 300   // Center of robot. The table is 600x1000mm, so center is 300,500
@@ -49,11 +49,11 @@
 // The robot must be at this position at start time
 // Default: Centered in X and minimun position in Y
 #define ROBOT_INITIAL_POSITION_X 300
-#define ROBOT_INITIAL_POSITION_Y 45   // Measured from center of the robot pusher to the table border
+#define ROBOT_INITIAL_POSITION_Y 60   // Measured from center of the robot pusher to the table border
 
 // Robot defense and attack lines
-#define ROBOT_DEFENSE_POSITION 95
-#define ROBOT_DEFENSE_ATTACK_POSITION 220
+#define ROBOT_DEFENSE_POSITION 120
+#define ROBOT_DEFENSE_ATTACK_POSITION 360
 
 #define POSITION_TOLERANCE 50 // 5 steps
 
@@ -76,7 +76,7 @@
 
 #define MISSING_STEPS_MAX_ERROR_X 100
 #define MISSING_STEPS_MAX_ERROR_Y 100
-#define ROBOT_POSITION_CAMERA_CORRECTION_Y -20 // Correction of the position of the camera because the camera point of view and mark position
+#define ROBOT_POSITION_CAMERA_CORRECTION_Y 0 // Correction of the position of the camera because the camera point of view and mark position
 
 // AIR HOCKEY TABLE FANS SPEED
 // USE 255 for FULL SPEED (if you use 15V power supply 180 is ok)
