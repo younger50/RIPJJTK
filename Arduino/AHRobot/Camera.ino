@@ -60,14 +60,14 @@ void packetRead()
         robotPixY = extractParamInt(0);
         readStatus = 0;
         newPacket = 1;
-        Serial.println("===Positino Get===");
+        //Serial.println("===Positino Get===");
         //Serial.println(cam_timestamp);
-        Serial.println(puckPixX);
-        Serial.println(puckPixY);
+        //Serial.println(puckPixX);
+        //Serial.println(puckPixY);
         //Serial.println(puckSize);
         //Serial.println(robotPixX);
         //Serial.println(robotPixY);
-        Serial.println("===Postion End===");
+        //Serial.println("===Postion End===");
       }
     }
   }
