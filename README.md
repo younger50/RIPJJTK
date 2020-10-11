@@ -16,7 +16,7 @@ HELLO WORD!!! test!!*3
 * Julie  
 * Judy
 * Tina
-* Teng-Yu
+* Wright
 * Ke Ting-jui
 
 
